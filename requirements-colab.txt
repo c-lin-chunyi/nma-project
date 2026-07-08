@@ -1,0 +1,10 @@
+pandas
+pyarrow
+requests
+tqdm
+matplotlib
+seaborn
+scikit-learn
+jupyter
+ipykernel
+pytest

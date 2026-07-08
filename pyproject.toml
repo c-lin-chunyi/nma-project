@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nma-data-ingestion"
+version = "0.1.0"
+description = "Dataset ingestion helpers for the NMA Allen Visual Behavior project."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "pyarrow",
+    "requests",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+notebook = [
+    "matplotlib",
+    "seaborn",
+    "scikit-learn",
+    "jupyter",
+    "ipykernel",
+]
+test = [
+    "pytest",
+]
+
+[project.scripts]
+nma-download-data = "nma_data_ingestion.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
