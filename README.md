@@ -32,17 +32,9 @@ Then open `notebooks/00_ingestion_smoke_test.ipynb` and run the cells.
 
 ## Colab Setup
 
-In Colab:
+Open `notebooks/00_ingestion_smoke_test.ipynb` in Colab and run the cells top-to-bottom. The first code cell installs any missing Python dependencies inside the notebook and will use the repo package if the repo is available.
 
-```python
-!git clone <repo-url> nma-project
-%cd nma-project
-!pip install -r requirements-colab.txt
-!pip install -e .
-!nma-download-data --dataset neuromatch --validate
-```
-
-If the repo is already uploaded or mounted in Colab, start from `%cd nma-project`.
+If the notebook is opened standalone, it still downloads, validates, summarizes, and plots the dataset using notebook-local fallback helpers. If the full repo is cloned or mounted, it imports the shared helpers from `src/nma_data_ingestion/`.
 
 ## Python Usage
 
