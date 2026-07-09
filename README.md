@@ -79,6 +79,14 @@ Open `notebooks/00_ingestion_smoke_test.ipynb` in Colab and run the cells top-to
 
 If the notebook is opened standalone, it still downloads, validates, summarizes, and plots the dataset using notebook-local fallback helpers. If the full repo is cloned or mounted, it imports the shared helpers from `src/nma_data_ingestion/`.
 
+Use `notebooks/01_colab_drive_parquet_demo.ipynb` for a standalone Colab demo that
+loads an already-built AllenSDK-derived parquet from Google Drive. By default it looks
+for:
+
+```text
+/content/drive/MyDrive/nma-project/data/processed/allen_visp_sst_vip_slc17a7_pilot.parquet
+```
+
 For AllenSDK work in Colab, install the heavier optional requirements from the repo root:
 
 ```python
