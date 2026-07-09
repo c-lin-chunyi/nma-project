@@ -23,12 +23,19 @@ notebook = [
     "jupyter",
     "ipykernel",
 ]
+allensdk = [
+    "allensdk==2.16.2",
+    "brain-observatory-utilities==0.5.1",
+    "pynwb==2.8.3",
+    "hdmf>=4,<5",
+]
 test = [
     "pytest",
 ]
 
 [project.scripts]
 nma-download-data = "nma_data_ingestion.cli:main"
+nma-build-allen-parquet = "nma_data_ingestion.allensdk_pipeline:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

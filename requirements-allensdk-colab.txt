@@ -1,0 +1,13 @@
+pyarrow
+requests
+tqdm
+matplotlib
+seaborn
+scikit-learn
+jupyter
+ipykernel
+pytest
+allensdk==2.16.2
+brain-observatory-utilities==0.5.1
+pynwb==2.8.3
+hdmf>=4,<5
