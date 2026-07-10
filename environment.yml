@@ -5,6 +5,7 @@ dependencies:
   - python=3.11
   - pandas
   - pyarrow
+  - gdown
   - requests
   - tqdm
   - matplotlib

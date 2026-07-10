@@ -17,6 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 notebook = [
+    "gdown",
     "matplotlib",
     "seaborn",
     "scikit-learn",

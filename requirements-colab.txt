@@ -1,5 +1,6 @@
 pandas
 pyarrow
+gdown
 requests
 tqdm
 matplotlib
