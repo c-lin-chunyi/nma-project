@@ -90,6 +90,17 @@ https://drive.google.com/file/d/FILE_ID/view?usp=sharing
 The notebook installs `gdown` when needed and downloads the file to its local
 `data/` directory. The Drive file must be shared with anyone who has the link.
 
+Use `notebooks/02_colab_drive_hit_miss_pca.ipynb` for the follow-on analysis of hit
+and miss change trials. It downloads the same Drive-hosted parquet, constructs
+trial-by-neuron tensors from the event-aligned traces, and plots PCA trajectories,
+speed, and acceleration without requiring a local AllenSDK cache.
+
+Use `notebooks/03_colab_allen_cohort_session_selection.ipynb` to explore the full
+Allen Visual Behavior Ophys metadata tables, define a targeted experiment cohort,
+summarize behavioral performance, and rank candidate sessions. The notebook uses
+`data/cache/allensdk/` by default; set `ALLENSDK_CACHE_DIR` before the cache cell to
+use a persistent mounted-Drive location in Colab.
+
 For AllenSDK work in Colab, install the heavier optional requirements from the repo root:
 
 ```python
