@@ -7,7 +7,5 @@ scikit-learn
 jupyter
 ipykernel
 pytest
-allensdk==2.16.2
+allensdk @ git+https://github.com/AllenInstitute/AllenSDK.git@05328c2f4f4079af4df2325bea9ebf143922b875
 brain-observatory-utilities==0.5.1
-pynwb==2.8.3
-hdmf>=4,<5

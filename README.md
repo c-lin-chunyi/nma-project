@@ -97,9 +97,7 @@ speed, and acceleration without requiring a local AllenSDK cache.
 
 Use `notebooks/03_colab_allen_cohort_session_selection.ipynb` to explore the full
 Allen Visual Behavior Ophys metadata tables, define a targeted experiment cohort,
-summarize behavioral performance, and rank candidate sessions. The notebook uses
-`data/cache/allensdk/` by default; set `ALLENSDK_CACHE_DIR` before the cache cell to
-use a persistent mounted-Drive location in Colab.
+summarize behavioral performance, and rank candidate sessions.
 
 For AllenSDK work in Colab, install the heavier optional requirements from the repo root:
 
