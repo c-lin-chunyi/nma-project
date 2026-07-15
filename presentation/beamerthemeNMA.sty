@@ -1,0 +1,226 @@
+% NMA-inspired Beamer theme
+% Derived from the visual language of Neuromatch Academy course slides.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeNMA}[2026/07/15 NMA-inspired Beamer theme]
+
+\RequirePackage{iftex}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{etoolbox}
+\usetikzlibrary{calc,positioning}
+
+\mode<presentation>
+
+% --- Palette ---------------------------------------------------------------
+\definecolor{NMACharcoal}{HTML}{20292B}
+\definecolor{NMATeal}{HTML}{0E7C76}
+\definecolor{NMAPurple}{HTML}{64266E}
+\definecolor{NMACoral}{HTML}{F05A47}
+\definecolor{NMALightGray}{HTML}{E7E7E7}
+\definecolor{NMAMidGray}{HTML}{73797A}
+\definecolor{NMARule}{HTML}{AEB3B3}
+
+% --- Typography ------------------------------------------------------------
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage{lmodern}
+  \RequirePackage[notext]{stix2}
+  \renewcommand{\familydefault}{\sfdefault}
+\else
+  \RequirePackage{fontspec}
+  \RequirePackage{unicode-math}
+  \IfFontExistsTF{Metropolis Regular}{
+    \setsansfont{Metropolis Regular}[
+      BoldFont={Metropolis Bold},
+      ItalicFont={Metropolis Regular Italic},
+      BoldItalicFont={Metropolis Bold Italic}
+    ]
+  }{
+    \IfFontExistsTF{Proxima Nova}{
+      \setsansfont{Proxima Nova}
+    }{
+      \setsansfont{TeX Gyre Heros}
+    }
+  }
+  \setmathfont{STIX Two Math}
+  \renewcommand{\familydefault}{\sfdefault}
+\fi
+
+\setbeamerfont{title}{size=\fontsize{25}{28},series=\mdseries}
+\setbeamerfont{subtitle}{size=\fontsize{12}{15},series=\mdseries}
+\setbeamerfont{author}{size=\fontsize{10}{12},series=\mdseries}
+\setbeamerfont{date}{size=\fontsize{9}{11},series=\mdseries}
+\setbeamerfont{frametitle}{size=\fontsize{19}{22},series=\mdseries}
+\setbeamerfont{framesubtitle}{size=\fontsize{10}{12},series=\mdseries}
+\setbeamerfont{normal text}{size=\fontsize{11}{14}}
+\setbeamerfont{block title}{size=\fontsize{11}{13},series=\bfseries}
+\setbeamerfont{block body}{size=\fontsize{10}{13}}
+\setbeamerfont{footline}{size=\fontsize{5.8}{7},series=\bfseries}
+
+% --- Metadata --------------------------------------------------------------
+\newcommand{\nmacourse}{}
+\newcommand{\nmaweek}{}
+\newcommand{\nmasession}{}
+\newcommand{\nmatopic}{}
+\newcommand{\course}[1]{\renewcommand{\nmacourse}{#1}}
+\newcommand{\week}[1]{\renewcommand{\nmaweek}{#1}}
+\newcommand{\session}[1]{\renewcommand{\nmasession}{#1}}
+\newcommand{\topic}[1]{\renewcommand{\nmatopic}{#1}}
+
+\newcommand{\nmadot}{\hspace{0.45em}\raisebox{0.14ex}{\scriptsize$\bullet$}\hspace{0.45em}}
+\newcount\nmafooterfieldcount
+\newcommand{\nmafooterfield}[1]{%
+  \ifdefempty{#1}{}{%
+    \ifnum\nmafooterfieldcount>0\relax\nmadot\fi
+    #1%
+    \advance\nmafooterfieldcount by 1\relax
+  }%
+}
+
+% --- Official vector Neuromatch assets ------------------------------------
+% These PDF assets are path-only conversions of the official SVGs maintained
+% in github.com/neuromatch/neuromatch.io. Override this path if the theme is
+% installed somewhere other than beside the assets directory.
+\newcommand{\NMAassetpath}{assets}
+\newcommand{\NMAwordmarkdark}[1][3.15cm]{%
+  \includegraphics[width=#1]{\NMAassetpath/neuromatch-academy-dark.pdf}%
+}
+\newcommand{\NMAwordmarklight}[1][3.15cm]{%
+  \includegraphics[width=#1]{\NMAassetpath/neuromatch-academy-light.pdf}%
+}
+\newcommand{\NMAmarkdark}[1][0.20cm]{%
+  \includegraphics[height=#1]{\NMAassetpath/neuromatch-logo-dark.pdf}%
+}
+\newcommand{\NMAmarklight}[1][0.20cm]{%
+  \includegraphics[height=#1]{\NMAassetpath/neuromatch-logo-light.pdf}%
+}
+
+% --- Global Beamer setup ---------------------------------------------------
+\setbeamercolor{normal text}{fg=NMACharcoal,bg=white}
+\setbeamercolor{structure}{fg=NMATeal}
+\setbeamercolor{frametitle}{fg=NMACharcoal,bg=white}
+\setbeamercolor{framesubtitle}{fg=NMAMidGray,bg=white}
+\setbeamercolor{block title}{fg=white,bg=NMATeal}
+\setbeamercolor{block body}{fg=NMACharcoal,bg=NMATeal!8!white}
+\setbeamercolor{block title alerted}{fg=white,bg=NMACoral}
+\setbeamercolor{block body alerted}{fg=NMACharcoal,bg=NMACoral!8!white}
+\setbeamercolor{block title example}{fg=white,bg=NMAPurple}
+\setbeamercolor{block body example}{fg=NMACharcoal,bg=NMAPurple!7!white}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamersize{text margin left=0.68cm,text margin right=0.68cm}
+\setbeamertemplate{itemize item}{\raisebox{0.12ex}{\scriptsize$\bullet$}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.15ex}{\tiny$\circ$}}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setlength{\leftmargini}{1.25em}
+\setlength{\leftmarginii}{1.15em}
+
+% Clean white canvas; the footline paints its own flush-bottom bar.
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[white] (current page.south west) rectangle (current page.north east);
+  \end{tikzpicture}%
+}
+
+\setbeamertemplate{frametitle}{%
+  \vskip0.16cm
+  \nointerlineskip
+  \begin{beamercolorbox}[
+    wd=\paperwidth,ht=0.91cm,dp=0.18cm,
+    leftskip=0.68cm,rightskip=0.68cm
+  ]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+    \ifx\insertframesubtitle\@empty\else\\[-0.1ex]
+      {\usebeamerfont{framesubtitle}\color{NMAMidGray}\insertframesubtitle}
+    \fi
+  \end{beamercolorbox}%
+}
+
+\setbeamercolor{footline}{fg=NMACharcoal,bg=NMALightGray}
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \hbox{%
+    \begin{beamercolorbox}[
+      wd=.42\paperwidth,ht=.31cm,dp=.12cm,leftskip=.30cm
+    ]{footline}%
+      \usebeamerfont{footline}\insertshortauthor\nmadot\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[
+      wd=.16\paperwidth,ht=.31cm,dp=.12cm,center
+    ]{footline}%
+      \NMAmarklight[0.18cm]
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[
+      wd=.42\paperwidth,ht=.31cm,dp=.12cm,rightskip=.10cm,right
+    ]{footline}%
+      \usebeamerfont{footline}%
+      \nmafooterfieldcount=0\relax
+      \nmafooterfield{\nmacourse}%
+      \nmafooterfield{\nmaweek}%
+      \nmafooterfield{\nmasession}%
+      \nmafooterfield{\nmatopic}%
+      \ifnum\nmafooterfieldcount>0\relax\nmadot\fi
+      \insertframenumber\hspace*{0.45cm}
+    \end{beamercolorbox}%
+  }%
+}
+
+% --- Title page ------------------------------------------------------------
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[NMACharcoal] (current page.south west) rectangle (current page.north east);
+    \draw[NMARule,line width=.55pt]
+      ([xshift=.72cm,yshift=-.05cm]current page.west) --
+      ([xshift=-.72cm,yshift=-.05cm]current page.east);
+    \node[anchor=west,text=white,text width=.90\paperwidth,align=left]
+      at ([xshift=.78cm,yshift=.70cm]current page.west) {%
+        \usebeamerfont{title}\inserttitle
+        \ifx\insertsubtitle\@empty\else\\[.35em]
+          {\usebeamerfont{subtitle}\color{NMALightGray}\insertsubtitle}
+        \fi
+      };
+    \node[anchor=west,text=NMALightGray,text width=.90\paperwidth,align=left]
+      at ([xshift=.78cm,yshift=-.52cm]current page.west) {%
+        \usebeamerfont{author}\insertauthor
+        \ifx\insertdate\@empty\else\nmadot\insertdate\fi
+      };
+    \node[anchor=south west]
+      at ([xshift=.78cm,yshift=.50cm]current page.south west)
+      {\NMAwordmarkdark[3.10cm]};
+  \end{tikzpicture}%
+}
+
+% --- Reusable full-bleed section and closing frames -----------------------
+\newcommand{\NMAsectionframe}[2][]{%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[NMACharcoal] (current page.south west) rectangle (current page.north east);
+      \draw[NMARule,line width=.55pt]
+        ([xshift=.72cm,yshift=-.18cm]current page.west) --
+        ([xshift=-.72cm,yshift=-.18cm]current page.east);
+      \node[anchor=west,text=white,text width=.90\paperwidth,align=left]
+        at ([xshift=.78cm,yshift=.42cm]current page.west)
+        {\fontsize{25}{28}\selectfont #2};
+      \ifstrempty{#1}{}{%
+        \node[anchor=west,text=NMALightGray,text width=.90\paperwidth,align=left]
+          at ([xshift=.78cm,yshift=-.60cm]current page.west)
+          {\fontsize{11}{14}\selectfont #1};
+      }
+      \node[anchor=south west]
+        at ([xshift=.78cm,yshift=.50cm]current page.south west)
+        {\NMAwordmarkdark[3.10cm]};
+    \end{tikzpicture}
+  \end{frame}%
+}
+
+\newcommand{\NMAclosingframe}[2][]{\NMAsectionframe[#1]{#2}}
+
+% Compact highlighted takeaway line.
+\newcommand{\NMAtakeaway}[1]{%
+  \par\vspace{.35em}%
+  \begin{beamercolorbox}[wd=\linewidth,sep=.55em,leftskip=.15em]{block body}
+    \color{NMATeal}\bfseries #1
+  \end{beamercolorbox}%
+}
+
+\mode<all>

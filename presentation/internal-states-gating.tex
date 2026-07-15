@@ -1,0 +1,431 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{NMA}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\title[NMA Project Overview]{Project Overview}
+%\subtitle{Diagnosing where neural processing diverges on miss trials}
+\author[C. Lin]{Presented by Chunyi Lin}
+
+\date{}
+\course{Banshee Fireweed Group 1}
+\week{Week 2}
+\session{Day 4}
+
+\newcommand{\sourceNote}[1]{%
+  \par\vfill{\fontsize{6}{7}\selectfont\color{NMAMidGray}#1}%
+}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}{The same change of stimuli produces two actions}
+
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.46\textwidth}
+      \begin{block}{Hit}
+        \centering\Large visual change $\rightarrow$ lick
+      \end{block}
+    \end{column}
+    \begin{column}{.46\textwidth}
+      \begin{alertblock}{Miss}
+        \centering\Large visual change $\rightarrow$ no lick
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{1em}
+  The external event is similar, but the behavioral output differs. This makes
+  miss trials a natural probe of variability generated inside the animal.
+
+  %\NMAtakeaway{The question is not whether hits and misses differ, but where their processing pathways diverge.}
+\end{frame}
+
+\begin{frame}{A miss can arise at four different stages}
+  \centering
+  {\Large
+    internal state $\longrightarrow$ sensory encoding
+    $\longrightarrow$ decision $\longrightarrow$ action
+  }
+
+  \vspace{1.1em}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \begin{itemize}
+        \item The trial begins in a different population state.
+        \item The visual change is encoded less effectively.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \begin{itemize}
+        \item Sensory evidence fails to drive a decision.
+        \item A decision forms but fails to produce licking.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+  \NMAtakeaway{A single hit--miss decoder cannot identify which transformation failed.}
+\end{frame}
+
+\begin{frame}{The experiment resolves each trial}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \textbf{Comparable task event}
+
+      Hits and misses both come from change trials, reducing the largest
+      stimulus difference.
+
+      \vspace{.8em}
+      \textbf{Population activity}
+
+      Simultaneous neurons provide a high-dimensional view of cortical state.
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \textbf{Resolved behavioral outcome}
+
+      Licking identifies the response; reaction time bounds activity before
+      overt action.
+
+      \vspace{.8em}
+      \textbf{Arousal and movement}
+
+      Pupil, running, and licking provide competing explanations for neural
+      differences.
+    \end{column}
+  \end{columns}
+
+  \sourceNote{Pupil controls are motivated by Reimer et al., 2016, Nature Communications.}
+\end{frame}
+
+\begin{frame}{A miss is an outcome, not an internal state}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.46\textwidth}
+      \begin{alertblock}{Avoid this shortcut}
+        \[
+          \text{miss}=\text{disengaged}
+        \]
+        An engaged mouse can miss, and a weakly engaged mouse can occasionally
+        respond correctly.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \begin{block}{Infer state from the sequence}
+        \[
+          P(z_i=\text{engaged}\mid\text{behavioral history})
+        \]
+        Persistent state is a hypothesis about temporal structure, not a label
+        assigned from one trial.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \NMAtakeaway{Model behavior first; then ask how inferred state appears in neural activity.}
+\end{frame}
+
+\begin{frame}{Do failures cluster into persistent modes?}
+  \begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{.22\textwidth}Y Y}
+    \toprule
+    Model & What it captures & Key test \\
+    \midrule
+    Fixed lapse & Independent stimulus-unrelated errors & Is one lapse rate sufficient? \\
+    History GLM & Continuous dependence on recent trials & Does history explain clustering? \\
+    GLM--HMM & Distinct, persistent stimulus--response mappings & Do latent states improve held-out prediction? \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{.8em}
+  The output is a posterior state probability for every trial, not a binary
+  relabeling of misses.
+
+  \sourceNote{Ashwood et al., 2022, Nature Neuroscience.}
+\end{frame}
+
+\begin{frame}{Match sensory evidence before decoding}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.52\textwidth}
+      Match hit and miss trials within:
+      \begin{itemize}
+        \item previous and current image identity;
+        \item image-transition type;
+        \item recent stimulus and adaptation history;
+        \item trial position or temporal block;
+        \item relevant task timing.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.42\textwidth}
+      \begin{alertblock}{Without matching}
+        A decoder may separate
+        \[
+          \text{easy} \quad \text{vs.} \quad \text{difficult changes}
+        \]
+        rather than internal states.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \NMAtakeaway{``Both are change trials'' does not guarantee equivalent sensory input.}
+\end{frame}
+
+\NMAsectionframe[Define each processing stage independently]{Four neural axes localize the failure}
+
+\begin{frame}{A state signal should exist before the change}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      Use pre-change population activity to predict:
+      \begin{itemize}
+        \item behaviorally inferred latent state;
+        \item current-trial performance;
+        \item next-trial performance.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.46\textwidth}
+      \begin{block}{Pre-change state axis}
+        \[
+          \mathbf{x}_{\mathrm{pre}}
+          \longrightarrow P(\mathrm{engaged})
+        \]
+      \end{block}
+      Do not subtract each trial's baseline: tonic pre-change differences are
+      the signal of interest.
+    \end{column}
+  \end{columns}
+
+  \NMAtakeaway{Predicting future behavior rules out current licking or reward as the cause.}
+\end{frame}
+
+\begin{frame}{Define sensory coding without outcome}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      Train a sensory decoder on a variable such as:
+      \begin{itemize}
+        \item change versus no change;
+        \item image identity;
+        \item changed versus repeated image;
+        \item stimulus transition.
+      \end{itemize}
+      Then project matched hits and misses onto this axis.
+    \end{column}
+    \begin{column}{.47\textwidth}
+      \begin{block}{Two distinct outcomes}
+        \textbf{Weak signal on misses}
+
+        Sensory encoding may have failed.
+
+        \vspace{.65em}
+        \textbf{Normal signal on misses}
+
+        The failure lies downstream.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Choice information must precede the lick}
+  Train a cross-validated hit--miss classifier on early post-change,
+  pre-lick population activity.
+
+  \vspace{.8em}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \begin{block}{What it establishes}
+        Early population activity contains reproducible information about the
+        eventual behavioral response.
+      \end{block}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \begin{alertblock}{What it does not establish}
+        A supervised score is not automatically an accumulator, drift rate, or
+        mechanistic decision variable.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \NMAtakeaway{Call it a choice-related population score until accumulator-like properties are tested.}
+\end{frame}
+
+\begin{frame}{A motor axis isolates impending action}
+  Define lick-related activity using trials or events not used for the
+  hit--miss axis:
+  \begin{itemize}
+    \item spontaneous licks or separate lick bouts;
+    \item false alarms;
+    \item held-out pre-lick activity;
+    \item other movement measurements when available.
+  \end{itemize}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.47\textwidth}
+      \begin{block}{Sensory present, choice absent}
+        Evidence was encoded but did not reach a decision-related response.
+      \end{block}
+    \end{column}
+    \begin{column}{.47\textwidth}
+      \begin{exampleblock}{Choice present, motor absent}
+        A decision-related response emerged but did not produce licking.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{A gate changes sensory-to-choice coupling}
+  \[
+    C_i=\beta_0+\beta_1S_i+\beta_2Z_i
+      +\beta_3(S_i\times Z_i)+\varepsilon_i
+  \]
+
+  \begin{itemize}
+    \item $S_i$: sensory-axis activity
+    \item $C_i$: choice-axis activity
+    \item $Z_i$: engagement-state probability
+  \end{itemize}
+
+  \begin{block}{Mechanistic test}
+    The interaction $\beta_3$ asks whether the mapping from sensory evidence to
+    choice-related activity changes across internal states.
+  \end{block}
+
+  \NMAtakeaway{Gating is a changed transformation, not merely a weaker response.}
+\end{frame}
+
+\NMAsectionframe[Separate internal state from competing explanations]{Validation gives the axes meaning}
+
+\begin{frame}{Controls must compete with neural state}
+  \begin{align*}
+    M_0:\quad \text{behavior} &\sim
+      \text{pupil}+\text{running}+\text{movement}+\text{history} \\
+    M_1:\quad \text{behavior} &\sim
+      \text{pupil}+\text{running}+\text{movement}+\text{history}
+      +\text{neural state}
+  \end{align*}
+
+  Fit every nuisance transformation on training trials only, then compare
+  held-out performance.
+
+  \begin{alertblock}{Calibrated conclusion}
+    Neural population activity predicts engagement beyond the measured arousal
+    and movement variables. It does not prove independence from arousal.
+  \end{alertblock}
+
+  \sourceNote{Reimer et al., 2016; Ortiz et al., 2020.}
+\end{frame}
+
+\begin{frame}{Slow time can masquerade as internal state}
+  Motivation, neural activity, performance, and recording quality can all drift
+  across a session.
+
+  \vspace{.6em}
+  Use:
+  \begin{itemize}
+    \item time-matched hit--miss comparisons;
+    \item blocked or leave-one-block-out cross-validation;
+    \item within-session permutations that preserve local temporal structure;
+    \item explicit sensitivity analyses for slow drift.
+  \end{itemize}
+
+  \NMAtakeaway{The model must generalize beyond recognizing early versus late session.}
+\end{frame}
+
+\begin{frame}{The axes turn every miss into a diagnosis}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{.32\textwidth}Y}
+    \toprule
+    Held-out result & Most direct interpretation \\
+    \midrule
+    Sensory signal is weak & The visual change was encoded less effectively. \\
+    Sensory is preserved; choice is weak & Sensory evidence failed to drive a decision-related response. \\
+    Sensory and choice are preserved; motor is weak & A decision-related response failed to produce action. \\
+    Pre-change state predicts current and future behavior & Outcomes depend on a persistent internal condition. \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{.6em}
+  These interpretations require matched inputs, independent axes, and blocked
+  validation.
+\end{frame}
+
+\begin{frame}{Estimate within sessions before pooling}
+  Neural axes live in different neuron spaces across recordings, and trials are
+  nested within sessions and animals.
+
+  \vspace{.8em}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.47\textwidth}
+      \begin{alertblock}{Avoid}
+        Pooling all trials as independent observations, which inflates precision
+        and hides heterogeneous sessions.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{.47\textwidth}
+      \begin{block}{Prefer}
+        Estimate held-out effects per session, then combine them with a
+        hierarchical or mixed-effects model.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \NMAtakeaway{The population claim is recurrence across sessions or animals.}
+\end{frame}
+
+\begin{frame}{Prior work motivates the test, not the answer}
+  \begin{itemize}
+    \item \textbf{Lapses can be persistent.} Mouse choices can occupy sensory-guided
+      and biased latent strategies for tens to hundreds of trials.
+    \item \textbf{Engagement is not simply thirst or pupil size.} Performance and
+      V1 responses can decline without a matching decrease in pupil diameter.
+    \item \textbf{Strategy, engagement, and cortical state differ.} A neural
+      hit--miss axis may reflect strategy, expectation, movement, engagement, or
+      their interaction.
+  \end{itemize}
+
+  \NMAtakeaway{The analysis must distinguish these explanations rather than assign an engagement label by default.}
+
+  \sourceNote{Ashwood et al., 2022; Ortiz et al., 2020; Jacobs et al., 2020; Piet et al., 2024.}
+\end{frame}
+
+\begin{frame}{Move from behavior to mechanism}
+  \begin{enumerate}
+    \item Infer persistent behavioral state.
+    \item Match the sensory and temporal conditions.
+    \item Define pre-change, sensory, choice, and motor axes independently.
+    \item Test state-dependent sensory-to-choice coupling.
+    \item Validate against movement, arousal, time, and session structure.
+  \end{enumerate}
+
+  \vspace{.7em}
+  \begin{block}{Role of the current notebook}
+    The existing hit--miss decoder is the \textbf{choice-related axis module}.
+    It is one component of the internal-state analysis, not the complete model.
+  \end{block}
+\end{frame}
+
+\begin{frame}{References}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      {\scriptsize
+      \begin{itemize}
+        \item Wichmann \& Hill (2001). The psychometric function I.
+        \item Ashwood et al. (2022). Mice alternate between discrete strategies during perceptual decision-making.
+        \item Ortiz et al. (2020). Motivation and engagement during visually guided behavior.
+        \item Reimer et al. (2016). Pupil fluctuations track rapid changes in adrenergic and cholinergic activity.
+      \end{itemize}}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      {\scriptsize
+      \begin{itemize}
+        \item Jacobs et al. (2020). Cortical state fluctuations during sensory decision making.
+        \item Piet et al. (2024). Behavioral strategy shapes activation of the Vip--Sst inhibitory circuit.
+        \item Full links and proposal context are preserved in the source narrative supplied with this deck.
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\NMAclosingframe[Was the change not encoded, or was it prevented from reaching action?]{A miss reveals the failed stage}
+
+\end{document}

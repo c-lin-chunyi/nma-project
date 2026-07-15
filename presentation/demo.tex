@@ -1,0 +1,151 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{NMA}
+
+\title[Models]{Models are useful abstractions}
+\subtitle{A compact tour of descriptive, mechanistic, and normative views}
+\author[Gunnar Blohm]{Gunnar Blohm}
+\date{Neuromatch Academy}
+
+%\course{Computational Neuroscience}
+%\week{Week 1}
+%\session{Day 1}
+%\topic{Project}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}{Why models are useful}
+  \begin{itemize}
+    \item Synthesize knowledge and expose hidden assumptions.
+    \item Retrieve latent information that cannot be measured directly.
+    \item Turn hypotheses into quantitative predictions.
+    \item Guide experiments, interventions, and new technologies.
+  \end{itemize}
+
+  \NMAtakeaway{A model is useful when it sharpens the question we can ask.}
+  \end{frame}
+
+\begin{frame}{Match the abstraction to the question}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.47\textwidth}
+      \begin{block}{Descriptive -- ``what?''}
+        Summarize patterns in data with the smallest useful representation.
+      \end{block}
+      \vspace{.35em}
+      \begin{exampleblock}{Mechanistic -- ``how?''}
+        Specify a process that can generate the observed behavior.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.47\textwidth}
+      \begin{alertblock}{Normative -- ``why?''}
+        Ask what an ideal system should do under explicit constraints.
+      \end{alertblock}
+      \vspace{.35em}
+      Each view answers a different question; no single level is always best.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Cosine tuning captures a broad pattern}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.42\textwidth}
+      A cosine tuning model relates firing rate to movement direction:
+      \[
+        r(\theta)=b+A\cos(\theta-\theta_0).
+      \]
+      \begin{itemize}
+        \item $b$: baseline activity
+        \item $A$: modulation depth
+        \item $\theta_0$: preferred direction
+      \end{itemize}
+    \end{column}
+    \begin{column}{.53\textwidth}
+      \centering
+      \begin{tikzpicture}[x=1cm,y=1cm,>=stealth]
+        \draw[->,NMAMidGray] (0,0) -- (5.1,0) node[right] {$\theta$};
+        \draw[->,NMAMidGray] (0,0) -- (0,3.0) node[above] {$r$};
+        \draw[NMATeal,very thick,smooth,samples=80,domain=0:4.8]
+          plot (\x,{1.45+1.05*cos((\x-1.15)*75)});
+        \draw[dashed,NMARule] (1.15,0) -- (1.15,2.5);
+        \node[anchor=south,text=NMACharcoal] at (1.15,2.52) {preferred direction};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\NMAsectionframe[Models and data form a cycle of discovery]{From description to mechanism}
+
+\begin{frame}{Models and experiments constrain each other}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.36\textwidth}
+      \begin{itemize}
+        \item Models turn ideas into predictions.
+        \item Experiments test those predictions.
+        \item New data revise the model and the question.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.58\textwidth}
+      \centering
+      \begin{tikzpicture}[
+        node distance=1.55cm and 1.70cm,
+        every node/.style={font=\small,align=center},
+        box/.style={rounded corners=2pt,fill=NMATeal,text=white,
+                    minimum width=2.15cm,minimum height=.80cm},
+        arrow/.style={->,thick,NMAMidGray,rounded corners=5pt}
+      ]
+        \node[box] (question) {Question\\Hypothesis};
+        \node[box,right=of question] (model) {Model\\Quantification};
+        \node[box,below=of model] (prediction) {Prediction\\Outcome};
+        \node[box,left=of prediction] (experiment) {Experiment\\New data};
+        \draw[arrow] (question) -- (model);
+        \draw[arrow] (model) -- (prediction);
+        \draw[arrow] (prediction) -- (experiment);
+        \draw[arrow] (experiment) -- (question);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Use figures as evidence, not decoration}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.47\textwidth}
+      \begin{block}{Preferred asset formats}
+        \begin{itemize}
+          \item PDF for plots and diagrams
+          \item SVG converted to PDF at build time
+          \item TikZ for simple native schematics
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{.47\textwidth}
+      \begin{alertblock}{Reserve raster images for}
+        Photographs, microscopy, or source material that is inherently pixel-based.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vfill
+  {\small\color{NMAMidGray}%
+    Keep source and attribution near the figure, where the audience can read it.}
+\end{frame}
+
+\begin{frame}{Design choices should support learning}
+  \begin{enumerate}
+    \item Start with the question the audience should be able to answer.
+    \item Choose the simplest model that makes the relevant distinction.
+    \item Show the evidence and state what it changes.
+  \end{enumerate}
+
+  \vspace{.5em}
+  \begin{block}{Template principle}
+    One claim per slide, generous margins, and a consistent visual hierarchy.
+  \end{block}
+\end{frame}
+
+\NMAclosingframe[Questions and productive next steps]{Now build a model worth testing}
+
+\end{document}
